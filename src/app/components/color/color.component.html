@@ -1,0 +1,7 @@
+<ul class="list-group">
+    <li *ngFor="let color of colors" 
+    routerLink="cars/color/{{color.colorId}}"
+    (click) = "getCurrentColor(color)"
+    [class] = "setCurrentColorClass(color)">        
+    {{color.colorName}}</li>
+</ul>

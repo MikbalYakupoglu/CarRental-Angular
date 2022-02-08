@@ -1,0 +1,66 @@
+<div class="mb-3">
+    <label for="filterText" class="form-label">Ürün Ara</label>
+    <input type="email" [(ngModel)]="filterText" class="form-control" id="filterText" 
+    placeholder="Aramak İstediğiniz Ürünü Giriniz">
+</div>
+
+<div *ngIf="dataListed == false"  class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+</div>
+
+
+<div>
+    <table *ngIf="!carDetails" class = "table">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Brand</td>
+                <td>Color</td>
+                <td>Model</td>
+                <td>DailyPrice</td>
+                <td>Description</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let car of cars | filter:filterText"
+            (click) = "getCurrentCar(car)"
+            >   
+                <td routerLink="/carDetails/{{car.carId}}"> {{car.carId}} </td>
+                <td routerLink="/carDetails/{{car.carId}}"> {{car.brandName}} </td>
+                <td routerLink="/carDetails/{{car.carId}}"> {{car.colorName}} </td>
+                <td routerLink="/carDetails/{{car.carId}}"> {{car.modelYear}} </td>
+                <td routerLink="/carDetails/{{car.carId}}"> {{car.dailyPrice}} </td>
+                <td routerLink="/carDetails/{{car.carId}}"> {{car.description}} </td>
+                <td routerLink=""><button type="button" class="btn btn-success"  (click)="addToCart(car)">Sepete Ekle</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="carDetails">
+        <div    >
+            <img  *ngFor="let carImage of carImages" [src]="getImageSource(carImage)" width="300px" class="imageCards" >
+        </div>
+        <div>
+        <table class = "table">
+            <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>Brand</td>
+                    <td>Color</td>
+                    <td>Model</td>
+                    <td>DailyPrice</td>
+                    <td>Description</td>
+                </tr>
+            </thead>
+            <tr>
+                <td> {{carDetails.carId}} </td>
+                <td> {{carDetails.brandName}} </td>
+                <td> {{carDetails.colorName}} </td>
+                <td> {{carDetails.modelYear}} </td>
+                <td> {{carDetails.dailyPrice}} </td>
+                <td> {{carDetails.description}} </td>
+            </tr>
+        </table>
+    </div>
+</div>
