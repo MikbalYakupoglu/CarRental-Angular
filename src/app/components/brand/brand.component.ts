@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Brand } from 'src/app/models/brand';
 import { BrandService } from 'src/app/services/brand.service';
 
@@ -11,13 +11,14 @@ import { BrandService } from 'src/app/services/brand.service';
 })
 export class BrandComponent implements OnInit {
 
-  constructor(private _brandService:BrandService, private _formBuilder:FormBuilder,
-    ) { }
+  constructor(private _brandService:BrandService,    private router:Router,
+   ) { }
 
   brands:Brand[] = [];
   currentBrand:Brand = {brandId:0,brandName:""};
   dataLoaded:boolean = false;
   contactForm:FormGroup;
+  colorSelected:boolean = false;
 
   showBrands(){
     this._brandService.getBrands().subscribe((response) =>{
@@ -26,7 +27,6 @@ export class BrandComponent implements OnInit {
     });
   }
 
-  //current brand almıyor
   getCurrentBrand(brand:Brand){
     this.currentBrand = brand;
   }
@@ -40,19 +40,13 @@ export class BrandComponent implements OnInit {
     }
   } 
 
-  filter():number{
-    console.log(this.currentBrand.brandId);
-    return this.currentBrand.brandId;
-  }
-
-  setFilterDefault(){
-    this.contactForm = this._formBuilder.group({
-      brandFilter:[null]
-    })
+  routeTo(routerLink: string) {
+    if (routerLink != null) {
+      this.router.navigate([routerLink])
+    }
   }
   
   ngOnInit(): void {
-    this.setFilterDefault();
     this.showBrands();
   }
 

@@ -1,7 +1,16 @@
-<ul class="list-group">
+<!-- <ul class="list-group">
     <li *ngFor="let color of colors" 
     routerLink="cars/color/{{color.colorId}}"
     (click) = "getCurrentColor(color)"
     [class] = "setCurrentColorClass(color)">        
     {{color.colorName}}</li>
-</ul>
+</ul> -->
+
+<div class="form-floating">
+    <select #colorList class="form-select" aria-label="Color Name"
+     (change)="routeTo('cars/color/' + colorList.value)">
+      <option value="" selected disabled hidden>Renk seçiniz</option>
+      <option *ngFor="let color of colors" [value]="color.colorId">{{color.colorName}}</option>
+    </select>
+    <label for="colorList">Filtrelenecek Renk</label>
+</div>

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Car } from 'src/app/models/car';
+import { CarFilter } from 'src/app/models/carFilter';
 import { CarImage } from 'src/app/models/carImage';
+import { Color } from 'src/app/models/color';
 import { CarService } from 'src/app/services/car.service';
 import { CartService } from 'src/app/services/cart.service';
 
@@ -47,6 +49,14 @@ export class CarComponent implements OnInit {
       });
   }
 
+  showCarsByFilter(_brandId:number,_colorId:number){
+    let carFilter:CarFilter = {brandId:_brandId, colorId:_colorId};
+    this._carService.getCarsByFilter(_brandId,_colorId).subscribe(response=>{
+      this.cars = response.data;
+      this.dataListed = true;
+    });
+  }
+
   showCarDetails(carId:number){
     this._carService.getCarById(carId).subscribe(response=>{
       this.carDetails=response.data;
@@ -82,6 +92,9 @@ export class CarComponent implements OnInit {
         this.getCarImage(params["carId"]);
         this.getImageSource;
       }
+      else if (params["brandId"] && params["colorId"]){
+        this.showCarsByFilter(params["brandId"],params["colorId"]);
+      }      
       else if (params["brandId"]) {
         this.showCarsByBrand(params["brandId"])
       }

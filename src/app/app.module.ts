@@ -16,6 +16,7 @@ import { CarComponent } from './components/car/car.component';
 import { RentalComponent } from './components/rental/rental.component';
 import { CartSummaryComponent } from './components/cart-summary/cart-summary.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { CarFilterComponent } from './components/car-filter/car-filter.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { FilterPipe } from './pipes/filter.pipe';
     RentalComponent,
     CartSummaryComponent,
     FilterPipe,
+    CarFilterComponent,
   ],
   
   imports: [

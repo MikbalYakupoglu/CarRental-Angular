@@ -11,7 +11,6 @@ export class ColorService {
 
   constructor(private _httpClient:HttpClient) { }
 
-
   apiUrl:string = "https://localhost:44309/api/colors/";
 
   getColors():Observable<ListResponseModel<Color>>{

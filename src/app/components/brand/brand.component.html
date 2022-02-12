@@ -1,12 +1,7 @@
-
-<form [formGroup] = "contactForm" (ngSubmit)="filter">
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" formControlName="brandFilter">
-                <option [ngValue]="null" disabled>Select Brand</option>
-                <option *ngFor="let brand of brands" 
-                        (change) = "getCurrentBrand(brand)"                              
-                        [class] = "setCurrentBrandClass(brand)" [ngValue]="brand.brandId">
-                                {{brand.brandName}}
-                </option>
-        </select>       
-        <button type="submit" routerLink="cars/brand/{{filter()}}" >Filter</button>
-</form>
+<div class="form-floating">
+        <select #brandList class="form-select" aria-label="Brand Name" (change)="routeTo('cars/brand/' + brandList.value)">
+          <option value="" selected disabled hidden>Marka seçiniz</option>
+          <option *ngFor="let brand of brands" [value]="brand.brandId">{{brand.brandName}}</option>
+        </select>
+        <label for="brandList">Filtrelenecek Marka</label>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Color } from 'src/app/models/color';
 import { ColorService } from 'src/app/services/color.service';
 
@@ -9,7 +10,8 @@ import { ColorService } from 'src/app/services/color.service';
 })
 export class ColorComponent implements OnInit {
 
-  constructor(private _colorService : ColorService) { }
+  constructor(private _colorService : ColorService, private router:Router,
+    private _activatedRoute:ActivatedRoute) { }
 
   colors:Color[] = [];
   currentColor:Color;
@@ -33,9 +35,14 @@ export class ColorComponent implements OnInit {
     else{
       return "list-group-item active";
     }
-
   }
 
+  routeTo(routerLink: string) {
+      if (routerLink != null) {
+        this.router.navigate([routerLink]);
+  }
+}
+  
   ngOnInit(): void {
     this.showColors();
   }

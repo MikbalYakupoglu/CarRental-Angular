@@ -1,0 +1,20 @@
+<div>
+    <div class="form-floating" style="margin-top: 20px;">
+        <select #brandList class="form-select" aria-label="Brand Name" (change)="setBrandId(brandList.value)" [(ngModel)] = "brandId">
+        <option value='0' selected disabled hidden>Marka seçiniz</option>
+        <option *ngFor="let brand of brands" [value]="brand.brandId">{{brand.brandName}}</option>
+        </select>
+        <label for="brandList">Filtrelenecek Marka</label>
+    </div>
+
+    <div class="form-floating" style="margin-top: 50px;">
+        <select #colorList class="form-select" aria-label="Color Name" (change)="setColorId(colorList.value)">
+        <option value='0' selected disabled hidden>Renk seçiniz</option>
+        <option *ngFor="let color of colors" [value]="color.colorId">{{color.colorName}}</option>
+        </select>
+        <label for="colorList">Filtrelenecek Renk</label>
+    </div>
+
+    <button class="btn btn-success" style="margin: 40px;" (click)="showCarsByFilter()"> Filtrele </button>
+    <button class="btn btn-success" (click)=" brandList.value = '0' ;colorList.value = '0' ;resetId() " > Temizle </button>
+</div>
