@@ -5,6 +5,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { RentalComponent } from './components/rental/rental.component';
 import { CartSummaryComponent } from './components/cart-summary/cart-summary.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { CarFilterComponent } from './components/car-filter/car-filter.component';
+import { OrderComponent } from './components/order/order.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { CarFilterComponent } from './components/car-filter/car-filter.component
     CartSummaryComponent,
     FilterPipe,
     CarFilterComponent,
+    OrderComponent,
   ],
   
   imports: [
@@ -42,8 +45,10 @@ import { CarFilterComponent } from './components/car-filter/car-filter.component
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
   ],
+
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

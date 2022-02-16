@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, mergeMap, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Car } from '../models/car';
 import { CarImage } from '../models/carImage';
 import { ListResponseModel } from '../models/listResponseModel';
@@ -40,9 +40,15 @@ export class CarService {
     return this._httpClient.get<SingleResponseModel<Car>>(newPath);
   } 
 
-  getCarImage(carId:number):Observable<ListResponseModel<CarImage>>{
+  getCarImages(carId:number):Observable<ListResponseModel<CarImage>>{
     let newPath = this.apiUrl+"carimages/listbycarid?carId="+carId;
     return this._httpClient.get<ListResponseModel<CarImage>>(newPath);
   }
-  
+
+  getCarImageForExhibit():Observable<ListResponseModel<CarImage>>{
+    let newPath = this.apiUrl + "carimages/getimageforexhibit";
+    return this._httpClient.get<ListResponseModel<CarImage>>(newPath);
+  }
+    
+
 }
