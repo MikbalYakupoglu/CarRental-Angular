@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,7 +19,9 @@ import { RentalComponent } from './components/rental/rental.component';
 import { CartSummaryComponent } from './components/cart-summary/cart-summary.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { CarFilterComponent } from './components/car-filter/car-filter.component';
-import { OrderComponent } from './components/order/order.component';
+import { PaymentComponent } from './components/payment/payment.component';
+import { HourlyPricePipe } from './pipes/hourly-price.pipe';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import { OrderComponent } from './components/order/order.component';
     CartSummaryComponent,
     FilterPipe,
     CarFilterComponent,
-    OrderComponent,
+    PaymentComponent,
+    HourlyPricePipe,
+    CartComponent,
   ],
   
   imports: [
@@ -46,9 +51,16 @@ import { OrderComponent } from './components/order/order.component';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    DlDateTimeDateModule,
+    DlDateTimePickerModule
   ],
 
-  providers: [],
-  bootstrap: [AppComponent],
+  providers: [
+
+  ],
+
+  bootstrap: [
+    AppComponent
+  ],
 })
-export class AppModule { }
+export class AppModule {  }

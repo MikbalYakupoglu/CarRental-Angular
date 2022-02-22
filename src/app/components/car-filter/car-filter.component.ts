@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Brand } from 'src/app/models/brand';
 import { Car } from 'src/app/models/car';
 import { Color } from 'src/app/models/color';
 import { BrandService } from 'src/app/services/brand.service';
-import { CarService } from 'src/app/services/car.service';
 import { ColorService } from 'src/app/services/color.service';
 
 @Component({
@@ -16,8 +15,7 @@ import { ColorService } from 'src/app/services/color.service';
 export class CarFilterComponent implements OnInit {
 
   constructor(private _brandService:BrandService, private _colorService:ColorService,
-    private _carService:CarService, private router:Router, private _activatedRoute:ActivatedRoute,
-    private _toastrService:ToastrService) { }
+    private router:Router, private _toastrService:ToastrService, ) { }
 
   brands:Brand[];
   colors:Color[];
@@ -26,6 +24,8 @@ export class CarFilterComponent implements OnInit {
   showFilterSelectors:boolean = true;
   brandId:number = 0;
   colorId:number = 0;
+
+  currentFilter = window.sessionStorage;
 
   getBrands(){
     this._brandService.getBrands().subscribe(response=>{
@@ -41,10 +41,12 @@ export class CarFilterComponent implements OnInit {
 
   setBrandId(_brandId:string){
     this.brandId = parseInt(_brandId);
+    this.setBrandIdOfSession(parseInt(_brandId));
   }
 
   setColorId(_colorId:string){
     this.colorId = parseInt(_colorId);
+    this.setColorIdOfSession(parseInt(_colorId));
   }
 
   filterSuccessToastr(){
@@ -68,10 +70,7 @@ export class CarFilterComponent implements OnInit {
     })
   }
 
-  showCarsByFilter(){    
-    this._carService.getCarsByFilter(this.brandId,this.colorId).subscribe(response=>{
-      //this.cars = response.data;
-    })
+  showCarsByFilter(){ 
 
       if (this.colorId > 0 && this.brandId > 0) {
         this.router.navigate(['cars/brand/' + this.brandId + '/color/' + this.colorId]);    
@@ -94,11 +93,51 @@ export class CarFilterComponent implements OnInit {
   resetId(){
     this.brandId = 0;
     this.colorId = 0;
+    this.currentFilter.clear();
+  }
+
+  setFilterButtonClass():string{
+    if (this.colorId > 0 || this.brandId > 0) {
+      return "btn btn-success";
+    }
+    else{
+      return "btn btn-success disabled";
+    }
+  }
+
+  getBrandIdOfSession(){
+    return parseInt(this.currentFilter.getItem("brandId"));
+  }
+
+  getColorIdOfSession(){
+    return parseInt(this.currentFilter.getItem("colorId"));
+  }
+
+  setBrandIdOfSession(brandId:number){
+    this.currentFilter.setItem("brandId",brandId.toString());
+  }
+
+  setColorIdOfSession(colorId:number){
+    this.currentFilter.setItem("colorId",colorId.toString());
   }
 
   ngOnInit(): void {
     this.getBrands();
     this.getColors();
+
+
+
+    if(isNaN(this.getBrandIdOfSession())){
+      this.setBrandIdOfSession(0);
+    }
+
+    if(isNaN(this.getColorIdOfSession())){
+      this.setColorIdOfSession(0);
+    }
+
+    this.brandId = this.getBrandIdOfSession();
+    this.colorId = this.getColorIdOfSession();
+    
     
     if(this.router.url.includes("carDetails")){
       this.showFilterSelectors = false;
@@ -107,5 +146,7 @@ export class CarFilterComponent implements OnInit {
       this.showFilterSelectors = true;
     }
   }
+
+  
 
 }

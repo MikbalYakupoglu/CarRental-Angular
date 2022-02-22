@@ -1,5 +1,4 @@
-import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Car } from 'src/app/models/car';
@@ -14,9 +13,10 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./car.component.css']
 })
 export class CarComponent implements OnInit {
+  @ViewChild('closeButton') closeButton:any;
 
   constructor(private _carService:CarService, private _activatedRoute:ActivatedRoute, 
-    private _cartService:CartService, private _toastrService:ToastrService, private router:Router
+    private _cartService:CartService, private _toastrService:ToastrService, private router:Router,
     ) { }
 
   cars:Car[] = [];
@@ -26,12 +26,16 @@ export class CarComponent implements OnInit {
   dataListed = false;
   filterText = "";
 
+  rentDate:Date;
+  returnDate:Date;
+
+  dateOfNow:Date;
+
+  activeModal:boolean = false;
   currentImagePath:string;
   thumbnail:any;
 
-   sleep(ms:number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+
 
   showCars(){
     this._carService.getCars().subscribe(response => {
@@ -69,8 +73,12 @@ export class CarComponent implements OnInit {
     });
   }
 
-  getCurrentCar(car:Car){
+  setCurrentCar(car:Car){
     this.currentCar = car;
+  }
+
+  getCurrentCar():Car{
+    return this.currentCar;
   }
 
   getCarImages(carId:number){
@@ -104,11 +112,55 @@ export class CarComponent implements OnInit {
 
   addToCart(car:Car){
     this._toastrService.clear();
-    this._cartService.addToCart(car);
-    this._toastrService.success("Sepete Eklendi", car.description);
+    this._cartService.ValidItemForAddCart(car,this.rentDate,this.returnDate,this.calculateRentCost(), this.closeButton);
   }
 
+  getHourlyPriceOfCar(dailyPrice:number):number{
+    return dailyPrice /24;
+  }
+
+  calculateRentCost():number{
+    let returnDay:number = this.returnDate.getDay();
+    let returnHour:number = this.returnDate.getHours();
+
+    let rentDay:number = this.rentDate.getDay();
+    let rentHour:number = this.rentDate.getHours();
+
+    let totalRentDay = returnDay - rentDay;
+
+    return this.getHourlyPriceOfCar(this.currentCar.dailyPrice) * ((totalRentDay*24) + (returnHour - rentHour));
+  }
+
+  totalRentDate():string{
+    return this.rentDate.toString() + " - " + this.returnDate.toString();
+  }
+
+  checkIfRentDateValid(car:Car){
+    if(this.rentDate == undefined || this.returnDate == undefined){
+      this._toastrService.error("Tarih Boş Bırakılamaz.","Hata",{
+        timeOut:2000,
+        progressBar:true
+    })}
+    else if (this.returnDate <= this.rentDate) {
+      this._toastrService.error("Dönüş Tarihi Kiralama Tarihinden Erken Olamaz.","Hata",{
+        timeOut:2000,
+        progressBar:true
+      })}
+    else if (this.rentDate < this.dateOfNow){
+      this._toastrService.error("Geçmiş Tarih Seçilemez.","Hata",{
+        timeOut:2000,
+        progressBar:true  
+    })}
+    else{        
+        this.addToCart(car);
+    }
+  }
+
+     // this.router.navigate(["payment"]);
+
   ngOnInit(): void {
+    this.dateOfNow = new Date();
+
     this._activatedRoute.params.subscribe(params=>{
       if(params["carId"]){
         this.showCarDetails(params["carId"]);
@@ -116,12 +168,15 @@ export class CarComponent implements OnInit {
       }
       else if (params["brandId"] && params["colorId"]){
         this.showCarsByFilter(params["brandId"],params["colorId"]);
+        this.getCarImageForExhibit();
       }      
       else if (params["brandId"]) {
         this.showCarsByBrand(params["brandId"])
+        this.getCarImageForExhibit();
       }
       else if(params["colorId"]){
         this.showCarsByColor(params["colorId"]);
+        this.getCarImageForExhibit();
       }
       else{
         this.showCars();

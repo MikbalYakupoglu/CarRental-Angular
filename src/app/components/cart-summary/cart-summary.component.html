@@ -5,11 +5,14 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
         <li *ngFor="let cartItem of cartItems">
-            <a class="dropdown-item">{{cartItem.car.description}} 
-              <span class="badge rounded-pill bg-info"></span>
+            <a class="dropdown-item" routerLink="/carDetails/{{cartItem.car.carId}}" >
+              {{cartItem.car.description}} &ensp; --- &ensp; 
+              {{cartItem.rentDate | date:"dd/MM/yyyy,hh:mm"}} - {{cartItem.returnDate | date:"dd/MM/yyyy,hh:mm"}} &ensp; --- &ensp;
+              {{cartItem.totalCost | currency}}
+              <span class="badge rounded-pill bg-info">  </span>
             </a>
         </li>
           <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item">Sepete Git</a></li>
+        <li><a class="dropdown-item" routerLink="cart">Sepeti Onayla</a></li>
     </ul>
 </li>

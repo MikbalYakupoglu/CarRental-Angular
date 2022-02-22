@@ -2,5 +2,7 @@ import { Car } from "./car";
 
 export class CartItem{
     car:Car;
-    quantity:number;
+    rentDate:Date;
+    returnDate:Date;
+    totalCost:number;
 }
