@@ -1,3 +1,14 @@
-<ul>
-    <li *ngFor="let cartItem of cartItems"> {{cartItem}} </li>
-</ul>
+<div class="container">
+    <div  *ngIf="cartItems.length <= 0" style="text-align: center; margin-top: 40px;">
+        <h5> SEPETİNİZ BOŞ! </h5>
+    </div>
+
+    <div *ngIf="cartItems.length > 0" style="margin-top: 20px;">
+        <ul >
+            <li *ngFor="let cartItem of cartItems"> 
+                {{cartItem.car.description}} || {{cartItem.rentDate}} -- {{cartItem.returnDate}} || {{cartItem.totalCost | currency}} 
+            </li>
+        </ul>
+        <button class="btn btn-success" (click)="rotatePayment()" style="left: 40px;"> Sepeti Onayla </button>
+    </div>
+</div>

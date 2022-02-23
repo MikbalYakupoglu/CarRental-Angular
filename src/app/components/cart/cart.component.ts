@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartItem } from 'src/app/models/cartItem';
 import { CartService } from 'src/app/services/cart.service';
 
@@ -9,7 +10,7 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class CartComponent implements OnInit {
 
-  constructor(private _cartService:CartService) { }
+  constructor(private _cartService:CartService, private router:Router) { }
 
   cartItems:CartItem[] = [];
 
@@ -17,8 +18,12 @@ export class CartComponent implements OnInit {
     this.cartItems = this._cartService.list();
   }
 
+  rotatePayment(){
+    this.router.navigate(["payment"]);
+  }
+
   ngOnInit(): void {
-    console.log(this.cartItems);
+    this.getCart();
   }
 
 }

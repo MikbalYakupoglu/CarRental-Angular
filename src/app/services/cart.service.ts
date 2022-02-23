@@ -11,6 +11,7 @@ export class CartService {
 
   constructor(private _toastrService:ToastrService) { }
 
+
   addToCart(car:Car, rentDate:Date, returnDate:Date, totalCost:number, closeButton:any){
     let cartItem = new CartItem();
     cartItem.car = car;

@@ -13,6 +13,7 @@ export class CartSummaryComponent implements OnInit {
 
   constructor(private _cartService:CartService, private _toastrService:ToastrService) { }
 
+  
   cartItems:CartItem[] = [];
 
   getCart(){

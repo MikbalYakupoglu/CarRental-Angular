@@ -6,6 +6,9 @@ import { CarFilter } from 'src/app/models/carFilter';
 import { CarImage } from 'src/app/models/carImage';
 import { CarService } from 'src/app/services/car.service';
 import { CartService } from 'src/app/services/cart.service';
+import { DateButton } from 'angular-bootstrap-datetimepicker';
+import { unitOfTime } from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-car',
@@ -19,6 +22,7 @@ export class CarComponent implements OnInit {
     private _cartService:CartService, private _toastrService:ToastrService, private router:Router,
     ) { }
 
+  disablePastDates:boolean = true;
   cars:Car[] = [];
   carImages:CarImage[] = [];
   carDetails:Car;
@@ -119,17 +123,40 @@ export class CarComponent implements OnInit {
     return dailyPrice /24;
   }
 
+  getRentDaYOfYear():number{
+    let now:any = this.rentDate;
+    let start:any = new Date(now.getFullYear(), 0, 0);
+    let diff = now - start;
+    let oneDay = 1000 * 60 * 60 * 24;
+    let day = Math.floor(diff / oneDay);
+
+    return day;
+  }
+
+  getReturnDaYOfYear():number{
+    let now:any = this.returnDate;
+    let start:any = new Date(now.getFullYear(), 0, 0);
+    let diff = now - start;
+    let oneDay = 1000 * 60 * 60 * 24;
+    let day = Math.floor(diff / oneDay);
+
+    return day;
+  }
+
   calculateRentCost():number{
-    let returnDay:number = this.returnDate.getDay();
-    let returnHour:number = this.returnDate.getHours();
-
-    let rentDay:number = this.rentDate.getDay();
-    let rentHour:number = this.rentDate.getHours();
-
-    let totalRentDay = returnDay - rentDay;
+    let returnHour:number = this.returnDate.getHours();    
+    let rentHour:number = this.rentDate.getHours();    
+    let totalRentDay = this.getReturnDaYOfYear() - this.getRentDaYOfYear();
 
     return this.getHourlyPriceOfCar(this.currentCar.dailyPrice) * ((totalRentDay*24) + (returnHour - rentHour));
   }
+
+  startDatePickerFilter = (dateButton: DateButton, viewName: string) => {
+    return this.disablePastDates
+      ? dateButton.value >= moment().startOf(viewName as unitOfTime.StartOf).valueOf()
+      : true;
+  }
+
 
   totalRentDate():string{
     return this.rentDate.toString() + " - " + this.returnDate.toString();
@@ -155,8 +182,6 @@ export class CarComponent implements OnInit {
         this.addToCart(car);
     }
   }
-
-     // this.router.navigate(["payment"]);
 
   ngOnInit(): void {
     this.dateOfNow = new Date();
