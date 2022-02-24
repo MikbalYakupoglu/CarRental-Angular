@@ -1,0 +1,30 @@
+<div class="contect" style="margin-top: 20px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="title">Renk Ekle</h5>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="colorAddForm" >
+                    <div class="mb-3">
+                        <label for="colorName">Renk Adı</label>
+                        <div class="form-group">
+                            <input type="text" 
+                            id="colorName" formControlName="colorName" 
+                            class="form-control" placeholder="Renk Adı"/>
+                        </div>       
+                    </div>        
+                </form>
+            </div>
+            <div class="cart-footer">
+                <button class="btn btn-fill btn-primary" (click)="addColor()" >Ekle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 20px;">
+    <ul class="list-group-flush" style="max-width: 200px;" >
+        <li *ngFor="let color of colors" class="list-group-item"> {{color.colorName}} </li>
+    </ul>
+</div>

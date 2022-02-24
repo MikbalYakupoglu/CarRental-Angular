@@ -3,8 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 
@@ -22,6 +21,9 @@ import { CarFilterComponent } from './components/car-filter/car-filter.component
 import { PaymentComponent } from './components/payment/payment.component';
 import { HourlyPricePipe } from './pipes/hourly-price.pipe';
 import { CartComponent } from './components/cart/cart.component';
+import { BrandAddComponent } from './components/brand-add/brand-add.component';
+import { ColorAddComponent } from './components/color-add/color-add.component';
+import { CarAddComponent } from './components/car-add/car-add.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,9 @@ import { CartComponent } from './components/cart/cart.component';
     PaymentComponent,
     HourlyPricePipe,
     CartComponent,
+    BrandAddComponent,
+    ColorAddComponent,
+    CarAddComponent,
   ],
   
   imports: [
