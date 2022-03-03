@@ -9,6 +9,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { DateButton } from 'angular-bootstrap-datetimepicker';
 import { unitOfTime } from 'moment';
 import * as moment from 'moment';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-car',
@@ -20,7 +21,7 @@ export class CarComponent implements OnInit {
 
   constructor(private _carService:CarService, private _activatedRoute:ActivatedRoute, 
     private _cartService:CartService, private _toastrService:ToastrService, private router:Router,
-    ) { }
+    private formBuilder:FormBuilder ) { }
 
   disablePastDates:boolean = true;
   cars:Car[] = [];
@@ -37,9 +38,15 @@ export class CarComponent implements OnInit {
 
   activeModal:boolean = false;
   currentImagePath:string;
-  thumbnail:any;
 
-
+  carUpdateForm:FormGroup = new FormGroup({
+    brandName: new FormControl(),
+    colorName: new FormControl(),
+    modelYear: new FormControl(),
+    dailyPrice: new FormControl(),
+    description: new FormControl(),
+  });
+  carUpdateMode:boolean = false;
 
   showCars(){
     this._carService.getCars().subscribe(response => {
@@ -72,8 +79,9 @@ export class CarComponent implements OnInit {
 
   showCarDetails(carId:number){
     this._carService.getCarById(carId).subscribe(response=>{
-      this.carDetails=response.data;
+      this.carDetails = response.data;
       this.dataListed = true;
+
     });
   }
 
@@ -183,13 +191,38 @@ export class CarComponent implements OnInit {
     }
   }
 
+  updateMode(){
+    if (this.carUpdateMode === true) {
+      this.carUpdateMode = false;
+    } else {
+      this.carUpdateMode = true;
+    }
+  }
+
+  loadCarInfo(){
+    this.carUpdateForm = this.formBuilder.group({
+      brandName:[""],
+      colorName:[""],
+      modelYear:[""],
+      dailyPrice:[""],
+      description:[""]
+    });
+  }
+
+  updateChanges(){
+
+  }
+
   ngOnInit(): void {
     this.dateOfNow = new Date();
+
 
     this._activatedRoute.params.subscribe(params=>{
       if(params["carId"]){
         this.showCarDetails(params["carId"]);
         this.getCarImages(params["carId"]);
+        this.loadCarInfo();
+
       }
       else if (params["brandId"] && params["colorId"]){
         this.showCarsByFilter(params["brandId"],params["colorId"]);
@@ -208,6 +241,9 @@ export class CarComponent implements OnInit {
         this.getCarImageForExhibit();
       }
     });
+
+
+
   }
 
 }

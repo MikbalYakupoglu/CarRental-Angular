@@ -45,7 +45,7 @@
     </div>
 </div>
 
-<div *ngIf="carDetails">
+<div *ngIf="carDetails && !carUpdateMode">
     <div>
         <img  *ngFor="let carImage of carImages" [src]="getImageSource(carImage)" width="300px" class="imageCards" >
     </div>
@@ -54,11 +54,11 @@
                 <thead>
                     <tr>
                         <td>Id</td>
-                        <td>Brand</td>
-                        <td>Color</td>
+                        <td>Marka</td>
+                        <td>Renk</td>
                         <td>Model</td>
-                        <td>HourlyPrice</td>
-                        <td>Description</td>
+                        <td>Saatlik Ücret</td>
+                        <td>Açıklama</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,11 +72,68 @@
                     </tr>
                 </tbody>
             </table>
-    </div>
+        </div>
+    <button class="btn btn-info" style="margin: 20px;" (click)="updateMode()"> Güncelle </button>
 </div>  
 
 
-<!-- Button trigger modal -->
+
+<div *ngIf="carUpdateMode">
+    <div>
+        <img  *ngFor="let carImage of carImages" [src]="getImageSource(carImage)" width="300px" class="imageCards" >
+    </div>
+        <div class="contect" style="margin-top: 20px;">
+            <div class="col-md-12">                
+                <form [formGroup]="carUpdateForm" >
+                    <div class="mb-3">
+                        <label for="brandName">Marka Adı</label>
+                        <div class="form-group">
+                            <input type="text" 
+                            id="brandName" formControlName="brandName" 
+                            class="form-control" [placeholder]="carDetails.brandName" />
+                        </div>       
+                    </div>        
+                    <div class="mb-3">
+                        <label for="colorName">Renk Adı</label>
+                        <div class="form-group">
+                            <input type="text" 
+                            id="colorName" formControlName="colorName" 
+                            class="form-control" [placeholder]="carDetails.colorName"/>
+                        </div>       
+                    </div>        
+                    <div class="mb-3">
+                        <label for="modelYear">Model Yılı</label>
+                        <div class="form-group">
+                            <input type="number" 
+                            id="modelYear" formControlName="modelYear" 
+                            class="form-control" [placeholder]="carDetails.modelYear"/>
+                        </div>       
+                    </div>        
+                    <div class="mb-3">
+                        <label for="dailyPrice">Günlük Ücret</label>
+                        <div class="form-group">
+                            <input type="number" 
+                            id="dailyPrice" formControlName="dailyPrice" 
+                            class="form-control" [placeholder]="carDetails.dailyPrice"/>
+                        </div>       
+                    </div>        
+                    <div class="mb-3">
+                        <label for="description">Açıklama</label>
+                        <div class="form-group">
+                            <input type="text" 
+                            id="description" formControlName="description" 
+                            class="form-control" [placeholder]="carDetails.description"/>
+                        </div>  
+                    </div>     
+                </form>
+            </div>        
+        </div>
+    <button class="btn btn-danger" style="margin: 20px;" (click)="updateMode()"> Geri Dön </button>
+    <button class="btn btn-success" style="margin: 20px;" (click)="updateChanges()"> Güncelle </button>
+
+</div>
+
+
 
   
   <!-- Modal -->

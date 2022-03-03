@@ -1,1 +1,77 @@
-<p>car-add works!</p>
+<div class="contect" style="margin-top: 20px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="title">Araba Ekle</h5>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="carAddForm" >
+                    <div class="mb-3">
+                        <label for="brandId">Marka Adı</label>
+                        <div class="form-group">
+                            <select #brandList class="form-select" aria-label="brandId"
+                            (change)="setBrandId(brandList.value)" formControlName="brandId">
+                                <option value="0" hidden disabled selected>Marka Seçiniz</option>
+                                <option *ngFor="let brand of brands" [value]="brand.brandId" > {{brand.brandName}} </option>
+                            </select>
+                        </div>
+                    </div>        
+                    <div class="mb-3">
+                        <label for="colorId">Renk Adı</label>
+                        <div class="form-group">
+                            <select #colorList class="form-select" aria-label="colorId"
+                            (change)="setColorId(colorList.value)" formControlName="colorId">
+                                <option value="0" hidden disabled selected>Renk Seçiniz</option>
+                                <option *ngFor="let color of colors" [value]="color.colorId" > {{color.colorName}} </option>
+                            </select>
+                        </div>
+                    </div>        
+                    <div class="mb-3">
+                        <label for="modelYear">Model Yılı</label>
+                        <div class="form-group">
+                            <input type="number" 
+                            id="modelYear" formControlName="modelYear" 
+                            class="form-control" placeholder="Model Yılı"/>
+                        </div>       
+                    </div>        
+                    <div class="mb-3">
+                        <label for="dailyPrice">Günlük Fiyat</label>
+                        <div class="form-group">
+                            <input type="number" 
+                            id="dailyPrice" formControlName="dailyPrice" 
+                            class="form-control" placeholder="Günlük Fiyat"/>
+                        </div>       
+                    </div>        
+                    <div class="mb-3">
+                        <label for="description">Açıklama</label>
+                        <div class="form-group">
+                            <input type="text" 
+                            id="description" formControlName="description" 
+                            class="form-control" placeholder="Açıklama"/>
+                        </div>       
+                    </div>   
+                    <!-- <div class="mb-3">
+                        <label for="description">Fotoğraf</label>
+                        <div class="form-group">
+                            <input type="file" multiple [(ngModel)]="carImageFile"
+                            id="uploadImage" class="form-control"/>
+                        </div>       
+                    </div>            -->
+                </form>
+            </div>
+            <div class="cart-footer">
+                <button class="btn btn-fill btn-primary" (click)="addCar()" >Ekle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="margin-top: 20px;">
+    <ul class="list-group-flush" style="max-width: 200px;" >
+        <li *ngFor="let car of cars" class="list-group-item" style="margin-top: 20px;" 
+        routerLink="/carDetails/{{car.carId}}"> {{car.description}} 
+            <button class="btn btn-info">Detaylara Git</button>
+        </li>
+    </ul>
+</div>

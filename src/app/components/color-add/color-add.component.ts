@@ -17,11 +17,11 @@ export class ColorAddComponent implements OnInit {
     private toastrService:ToastrService) { }
 
   ngOnInit(): void {
-    this.createBrandAddForm();
+    this.createColorAddForm();
     this.getBrands();
   }
 
-  createBrandAddForm(){
+  createColorAddForm(){
     this.colorAddForm = this.formBuilder.group({
       colorName:["",Validators.required]
     });

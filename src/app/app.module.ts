@@ -24,6 +24,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { BrandAddComponent } from './components/brand-add/brand-add.component';
 import { ColorAddComponent } from './components/color-add/color-add.component';
 import { CarAddComponent } from './components/car-add/car-add.component';
+import { CarUpdateComponent } from './components/car-update/car-update.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CarAddComponent } from './components/car-add/car-add.component';
     BrandAddComponent,
     ColorAddComponent,
     CarAddComponent,
+    CarUpdateComponent,
   ],
   
   imports: [

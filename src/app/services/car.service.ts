@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Car } from '../models/car';
 import { CarImage } from '../models/carImage';
 import { ListResponseModel } from '../models/listResponseModel';
+import { ResponseModel } from '../models/responseModel';
 import { SingleResponseModel } from '../models/singleResponseModel';
 
 @Injectable({
@@ -48,6 +49,16 @@ export class CarService {
   getCarImageForExhibit():Observable<ListResponseModel<CarImage>>{
     let newPath = this.apiUrl + "carimages/getimageforexhibit";
     return this._httpClient.get<ListResponseModel<CarImage>>(newPath);
+  }
+
+  addCar(car:Car):Observable<ResponseModel>{
+    let newPath = this.apiUrl + "cars/add";
+    return this._httpClient.post<ResponseModel>(newPath,car);
+  }
+
+  addCarImage(file:File, carImage:CarImage):Observable<ResponseModel>{
+    let newPath = this.apiUrl + "carimages/upload";
+    return this._httpClient.post<ResponseModel>(newPath,[file,carImage]);
   }
     
 
