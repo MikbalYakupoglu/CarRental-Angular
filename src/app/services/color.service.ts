@@ -12,15 +12,15 @@ export class ColorService {
 
   constructor(private _httpClient:HttpClient) { }
 
-  apiUrl:string = "https://localhost:44309/api/colors/";
+  apiUrl:string = "https://localhost:44309/api/";
 
   getColors():Observable<ListResponseModel<Color>>{
-    let newPath = this.apiUrl + "getall";
+    let newPath = this.apiUrl + "colors/";
     return this._httpClient.get<ListResponseModel<Color>>(newPath);
   }
 
   addColor(color:Color):Observable<ResponseModel>{
-    let newPath = this.apiUrl + "add";
+    let newPath = this.apiUrl + "colors/";
     return this._httpClient.post<ResponseModel>(newPath,color);
   }
 

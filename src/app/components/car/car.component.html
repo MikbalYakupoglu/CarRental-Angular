@@ -86,21 +86,23 @@
             <div class="col-md-12">                
                 <form [formGroup]="carUpdateForm" >
                     <div class="mb-3">
-                        <label for="brandName">Marka Adı</label>
+                        <label for="brandId">Marka Adı</label>
                         <div class="form-group">
-                            <input type="text" 
-                            id="brandName" formControlName="brandName" 
-                            class="form-control" [placeholder]="carDetails.brandName" />
-                        </div>       
+                            <select #brandList class="form-select" aria-label="brandId"
+                            (change)="setBrandId(brandList.value)" formControlName="brandId">
+                                <option *ngFor="let brand of brands" [value]="brand.brandId" selected> {{brand.brandName}} </option>
+                            </select>
+                        </div>
                     </div>        
                     <div class="mb-3">
-                        <label for="colorName">Renk Adı</label>
+                        <label for="colorId">Renk Adı</label>
                         <div class="form-group">
-                            <input type="text" 
-                            id="colorName" formControlName="colorName" 
-                            class="form-control" [placeholder]="carDetails.colorName"/>
-                        </div>       
-                    </div>        
+                            <select #colorList class="form-select" aria-label="colorId"
+                            (change)="setColorId(colorList.value)" formControlName="colorId">
+                                <option *ngFor="let color of colors" [value]="color.colorId" > {{color.colorName}} </option>
+                            </select>
+                        </div>
+                    </div>  
                     <div class="mb-3">
                         <label for="modelYear">Model Yılı</label>
                         <div class="form-group">

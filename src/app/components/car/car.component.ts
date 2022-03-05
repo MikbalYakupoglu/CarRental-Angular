@@ -9,7 +9,11 @@ import { CartService } from 'src/app/services/cart.service';
 import { DateButton } from 'angular-bootstrap-datetimepicker';
 import { unitOfTime } from 'moment';
 import * as moment from 'moment';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { BrandService } from 'src/app/services/brand.service';
+import { ColorService } from 'src/app/services/color.service';
+import { Brand } from 'src/app/models/brand';
+import { Color } from 'src/app/models/color';
 
 @Component({
   selector: 'app-car',
@@ -21,11 +25,17 @@ export class CarComponent implements OnInit {
 
   constructor(private _carService:CarService, private _activatedRoute:ActivatedRoute, 
     private _cartService:CartService, private _toastrService:ToastrService, private router:Router,
-    private formBuilder:FormBuilder ) { }
+    private formBuilder:FormBuilder, private _brandService:BrandService, private _colorService:ColorService ) { }
 
   disablePastDates:boolean = true;
   cars:Car[] = [];
   carImages:CarImage[] = [];
+  brands:Brand[] = [];
+  colors:Color[] = [];
+
+  brandId:number = 0;
+  colorId:number = 0;
+
   carDetails:Car;
   currentCar:Car;
   dataListed = false;
@@ -39,13 +49,7 @@ export class CarComponent implements OnInit {
   activeModal:boolean = false;
   currentImagePath:string;
 
-  carUpdateForm:FormGroup = new FormGroup({
-    brandName: new FormControl(),
-    colorName: new FormControl(),
-    modelYear: new FormControl(),
-    dailyPrice: new FormControl(),
-    description: new FormControl(),
-  });
+  carUpdateForm:FormGroup;
   carUpdateMode:boolean = false;
 
   showCars(){
@@ -94,7 +98,7 @@ export class CarComponent implements OnInit {
   }
 
   getCarImages(carId:number){
-    this._carService.getCarImages(carId).subscribe(response=>{
+    this._carService.getImagesByCar(carId).subscribe(response=>{
       this.carImages = response.data;
     });
   }
@@ -191,6 +195,38 @@ export class CarComponent implements OnInit {
     }
   }
 
+  getBrands(){
+    this._brandService.getBrands().subscribe(response=>{
+      this.brands = response.data;
+    });
+  }
+
+  setBrandId(_brandId:string){
+    let currentBrandId = parseInt(_brandId);
+    this.brandId = currentBrandId;
+  }
+  
+  getColors(){
+    this._colorService.getColors().subscribe(response=>{
+      this.colors = response.data;
+    });
+  }
+
+  setColorId(_colorId:string){
+    let currentColorId = parseInt(_colorId);
+    this.colorId = currentColorId;
+  }
+  
+  createCarUpdateForm(){
+    this.carUpdateForm = this.formBuilder.group({
+      brandId:[this.brandId,""],
+      colorId:[this.colorId,""],
+      modelYear:["",""],
+      dailyPrice:["",""],
+      description:["",""]
+    });
+  }
+
   updateMode(){
     if (this.carUpdateMode === true) {
       this.carUpdateMode = false;
@@ -199,29 +235,53 @@ export class CarComponent implements OnInit {
     }
   }
 
-  loadCarInfo(){
-    this.carUpdateForm = this.formBuilder.group({
-      brandName:[""],
-      colorName:[""],
-      modelYear:[""],
-      dailyPrice:[""],
-      description:[""]
-    });
-  }
-
+  // null check eklenecek (null ise aynı değer atanacak)
   updateChanges(){
 
+    let carModelToUpdate = Object.assign({},this.carUpdateForm.value);
+
+    this._carService.updateCar(carModelToUpdate).subscribe((response) =>{
+    console.log(response);
+    console.log(carModelToUpdate);
+
+
+      this._toastrService.success("","Başarılı",{timeOut:3000,progressBar:true});
+    },
+    (errorResponse) => {
+      console.log(errorResponse);
+      if(errorResponse.error.ValidationErrors){
+        errorResponse.error.ValidationErrors.forEach((error:any) => {
+        this._toastrService.error(error.ErrorMessage,"Hata",{progressBar:true,timeOut:3000});          
+        });
+      }
+      else if (errorResponse.error.Message) {
+        this._toastrService.error(errorResponse.error.Message,"Hata",{progressBar:true,timeOut:3000});
+      }
+
+      
+    })
+    
   }
+
 
   ngOnInit(): void {
     this.dateOfNow = new Date();
+
+    this.getBrands();
+    this.getColors();
+
+    this.carUpdateForm;
 
 
     this._activatedRoute.params.subscribe(params=>{
       if(params["carId"]){
         this.showCarDetails(params["carId"]);
         this.getCarImages(params["carId"]);
-        this.loadCarInfo();
+
+        this.setBrandId(params["carId"]);
+        this.setColorId(params["carId"]);
+
+        this.createCarUpdateForm();
 
       }
       else if (params["brandId"] && params["colorId"]){

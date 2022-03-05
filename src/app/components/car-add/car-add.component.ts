@@ -90,7 +90,7 @@ export class CarAddComponent implements OnInit {
         });
      },
      errorResponse=>{
-       console.log(errorResponse);
+
       if(errorResponse.error.ValidationErrors){ // validation rules error
         errorResponse.error.ValidationErrors.forEach((error:any) => {
           this.toastrService.error(error.ErrorMessage,"Hata",{

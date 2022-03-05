@@ -11,15 +11,15 @@ export class RentalService {
 
   constructor(private _httpClient : HttpClient) { }
 
-  apiUrl:string = "https://localhost:44309/api/rentals/";
+  apiUrl:string = "https://localhost:44309/api/";
 
   getRentals():Observable<ListResponseModel<Rental>>{
-    let newPath = this.apiUrl+"getrentaldetails";
+    let newPath = this.apiUrl+"rentals/getrentaldetails";
     return this._httpClient.get<ListResponseModel<Rental>>(newPath);
   }
 
   getRentalByCarId(carId:number):Observable<Rental>{
-    let newPath = this.apiUrl + "getrentaldetailsbycarid?id="+carId;
+    let newPath = this.apiUrl + "rentals/getrentaldetailsbycarid/"+carId;
     return this._httpClient.get<Rental>(newPath);
   }
 }

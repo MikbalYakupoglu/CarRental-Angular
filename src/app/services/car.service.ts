@@ -14,20 +14,23 @@ export class CarService {
   constructor(private _httpClient : HttpClient) { }
 
 
+
+
   apiUrl:string = "https://localhost:44309/api/";
 
+
   getCars():Observable<ListResponseModel<Car>>{
-    let newPath = this.apiUrl+ "cars/getcardetails";
+    let newPath = this.apiUrl+ "cars/getcardetails/";
     return this._httpClient.get<ListResponseModel<Car>>(newPath);
   }
 
   getCarsByBrand(brandId:number):Observable<ListResponseModel<Car>>{
-    let newPath = this.apiUrl + "cars/getcarsbybrand?brandId="+brandId;
+    let newPath = this.apiUrl + "cars/getcarsbybrand/"+brandId;
     return this._httpClient.get<ListResponseModel<Car>>(newPath);
   }
 
   getCarsByColor(colorId:number):Observable<ListResponseModel<Car>>{
-    let newPath = this.apiUrl + "cars/getcarsbycolor?colorId="+ colorId;
+    let newPath = this.apiUrl + "cars/getcarsbycolor/"+ colorId;
     return this._httpClient.get<ListResponseModel<Car>>(newPath);
   }
 
@@ -37,27 +40,35 @@ export class CarService {
   }
 
   getCarById(carId:number):Observable<SingleResponseModel<Car>>{
-    let newPath = this.apiUrl + "cars/getcarbyid?carId="+carId;
+    let newPath = this.apiUrl + "cars/"+carId;
     return this._httpClient.get<SingleResponseModel<Car>>(newPath);
   } 
 
-  getCarImages(carId:number):Observable<ListResponseModel<CarImage>>{
-    let newPath = this.apiUrl+"carimages/listbycarid?carId="+carId;
+  addCar(car:Car):Observable<ResponseModel>{
+    let newPath = this.apiUrl + "cars/";
+    return this._httpClient.post<ResponseModel>(newPath,car);
+  }
+
+  updateCar(car:Car):Observable<ResponseModel>{   
+    let newPath = this.apiUrl + "cars/";
+    return this._httpClient.put<ResponseModel>(newPath,car);
+  }
+
+
+
+
+  getImagesByCar(carId:number):Observable<ListResponseModel<CarImage>>{
+    let newPath = this.apiUrl+"carimages/listbycarid/"+carId;
     return this._httpClient.get<ListResponseModel<CarImage>>(newPath);
   }
 
   getCarImageForExhibit():Observable<ListResponseModel<CarImage>>{
-    let newPath = this.apiUrl + "carimages/getimageforexhibit";
+    let newPath = this.apiUrl + "carimages/getimageforexhibit/";
     return this._httpClient.get<ListResponseModel<CarImage>>(newPath);
   }
 
-  addCar(car:Car):Observable<ResponseModel>{
-    let newPath = this.apiUrl + "cars/add";
-    return this._httpClient.post<ResponseModel>(newPath,car);
-  }
-
   addCarImage(file:File, carImage:CarImage):Observable<ResponseModel>{
-    let newPath = this.apiUrl + "carimages/upload";
+    let newPath = this.apiUrl + "carimages/";
     return this._httpClient.post<ResponseModel>(newPath,[file,carImage]);
   }
     
