@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
 <div class="row">
 
     <div class="col-3">
@@ -80,9 +83,21 @@
 
 <div *ngIf="carUpdateMode">       
 
-    <div>
-        <img  *ngFor="let carImage of carImages" [src]="getImageSource(carImage)" width="300px" class="imageCards" >
+    <div *ngFor="let carImage of carImages" style="display: inline-block; width: 30%;">
+            <img [src]="getImageSource(carImage)" width="300px" class="imageCards">
+            <a class="btn btn-danger" style="position:static;" >
+                <i class="fa fa-trash-o fa-lg"></i> Resmi Sil
+              </a> 
     </div>
+
+
+    <div style="display: inline-block; width: 30%;">
+        <a class="btn btn-success">
+            <i class="fa fa-solid fa-plus"></i> Resim Ekle
+        </a>
+    </div>
+
+    
         <div class="contect" style="margin-top: 20px;">
             <div class="col-md-12">                
                 <form [formGroup]="carUpdateForm" >

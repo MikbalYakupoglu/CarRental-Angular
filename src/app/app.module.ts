@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -59,7 +60,8 @@ import { CarUpdateComponent } from './components/car-update/car-update.component
     ReactiveFormsModule,
     CommonModule,
     DlDateTimeDateModule,
-    DlDateTimePickerModule
+    DlDateTimePickerModule,
+    FontAwesomeModule,
   ],
 
   providers: [
