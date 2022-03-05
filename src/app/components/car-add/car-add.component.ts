@@ -115,7 +115,7 @@ export class CarAddComponent implements OnInit {
     }
     else{
       this.toastrService.error("Form Eksik","Hata",{
-        progressBar:true, timeOut:2000
+        progressBar:true, timeOut:3000
       });
     }
   }

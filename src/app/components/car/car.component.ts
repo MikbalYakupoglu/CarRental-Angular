@@ -9,7 +9,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { DateButton } from 'angular-bootstrap-datetimepicker';
 import { unitOfTime } from 'moment';
 import * as moment from 'moment';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BrandService } from 'src/app/services/brand.service';
 import { ColorService } from 'src/app/services/color.service';
 import { Brand } from 'src/app/models/brand';
@@ -198,6 +198,7 @@ export class CarComponent implements OnInit {
   getBrands(){
     this._brandService.getBrands().subscribe(response=>{
       this.brands = response.data;
+      
     });
   }
 
@@ -209,6 +210,7 @@ export class CarComponent implements OnInit {
   getColors(){
     this._colorService.getColors().subscribe(response=>{
       this.colors = response.data;
+
     });
   }
 
@@ -219,11 +221,12 @@ export class CarComponent implements OnInit {
   
   createCarUpdateForm(){
     this.carUpdateForm = this.formBuilder.group({
-      brandId:[this.brandId,""],
-      colorId:[this.colorId,""],
-      modelYear:["",""],
-      dailyPrice:["",""],
-      description:["",""]
+      carId:[this.currentCar.carId],
+      brandId:[this.brandId,Validators.required],
+      colorId:[this.colorId,Validators.required],
+      modelYear:[this.currentCar.modelYear,Validators.required], 
+      dailyPrice:[this.currentCar.dailyPrice,Validators.required],
+      description:[this.currentCar.description,Validators.required]
     });
   }
 
@@ -231,37 +234,94 @@ export class CarComponent implements OnInit {
     if (this.carUpdateMode === true) {
       this.carUpdateMode = false;
     } else {
+      this.getCurrentCarsBrand();
+      this.getCurrentCarsColor();
+      this.createCarUpdateForm();
       this.carUpdateMode = true;
     }
   }
 
+   isContainedIn(subset:any, cluster:any) {
+    if (typeof subset != typeof cluster)
+        return false;
+    if (Array.isArray(subset) && Array.isArray(cluster)) {
+        // assuming same order at least
+        for (var i=0, j=0, la=subset.length, lb=cluster.length; i<la && j<lb;j++)
+            if (this.isContainedIn(subset[i], cluster[j]))
+                i++;
+        return i==la;
+    } else if (Object(subset) === subset) {
+        for (var p in subset)
+            if (!(p in cluster && this.isContainedIn(subset[p], cluster[p])))
+                return false;
+        return true;
+    } else
+        return subset === cluster;
+}
+
   // null check eklenecek (null ise aynı değer atanacak)
   updateChanges(){
+    
 
     let carModelToUpdate = Object.assign({},this.carUpdateForm.value);
 
-    this._carService.updateCar(carModelToUpdate).subscribe((response) =>{
-    console.log(response);
-    console.log(carModelToUpdate);
 
+    if(!this.carUpdateForm.valid){
+        this._toastrService.error("Form Eksik","Hata",{progressBar:true, timeOut:3000});
+    }
 
-      this._toastrService.success("","Başarılı",{timeOut:3000,progressBar:true});
-    },
-    (errorResponse) => {
-      console.log(errorResponse);
-      if(errorResponse.error.ValidationErrors){
-        errorResponse.error.ValidationErrors.forEach((error:any) => {
-        this._toastrService.error(error.ErrorMessage,"Hata",{progressBar:true,timeOut:3000});          
-        });
-      }
-      else if (errorResponse.error.Message) {
-        this._toastrService.error(errorResponse.error.Message,"Hata",{progressBar:true,timeOut:3000});
-      }
+    else if (this.isContainedIn(carModelToUpdate,this.currentCar)) {
+      this._toastrService.error("Girilen Bilgiler Aynı Olamaz.","Güncelleme Başarısız",{progressBar:true,timeOut:3000})
+    }    
 
-      
-    })
+    else {
+
+      this._carService.updateCar(carModelToUpdate).subscribe((response) =>{    
+    
+          this._toastrService.success("Ürün Güncellendi","Başarılı",{timeOut:3000,progressBar:true});
+          this.router.navigate(['cars']);
+        },
+        (errorResponse) => {
+          console.log(errorResponse);
+          if(errorResponse.error.ValidationErrors){ //Validation Error
+            errorResponse.error.ValidationErrors.forEach((error:any) => {
+            this._toastrService.error(error.ErrorMessage,"Hata",{progressBar:true,timeOut:4000});          
+            });
+          }
+          else if (errorResponse.error.message) { //Business Error
+            this._toastrService.error(errorResponse.error.message,"Hata",{progressBar:true,timeOut:3000});            
+          }
+          else if (errorResponse.error.Message) { //Exception Error
+            this._toastrService.error(errorResponse.error.Message,"Hata",{progressBar:true,timeOut:3000});
+          }
+    
+          
+        })
+    }
+
+   
     
   }
+
+  getCurrentCarsBrand(){
+
+    for (let i = 0; i < this.brands.length; i++) {
+        if (this.brands[i].brandName === this.currentCar.brandName) {
+          this.brandId = this.brands[i].brandId;
+        }
+      
+    }
+  }
+
+  getCurrentCarsColor(){
+
+    for (let i = 0; i < this.colors.length; i++) {
+      if (this.colors[i].colorName === this.currentCar.colorName) {
+        this.colorId = this.colors[i].colorId;
+      }      
+   }
+  }
+
 
 
   ngOnInit(): void {
@@ -270,7 +330,6 @@ export class CarComponent implements OnInit {
     this.getBrands();
     this.getColors();
 
-    this.carUpdateForm;
 
 
     this._activatedRoute.params.subscribe(params=>{
@@ -278,10 +337,6 @@ export class CarComponent implements OnInit {
         this.showCarDetails(params["carId"]);
         this.getCarImages(params["carId"]);
 
-        this.setBrandId(params["carId"]);
-        this.setColorId(params["carId"]);
-
-        this.createCarUpdateForm();
 
       }
       else if (params["brandId"] && params["colorId"]){

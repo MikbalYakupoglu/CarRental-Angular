@@ -73,12 +73,13 @@
                 </tbody>
             </table>
         </div>
-    <button class="btn btn-info" style="margin: 20px;" (click)="updateMode()"> Güncelle </button>
+    <button class="btn btn-info" style="margin: 20px;" (click)="setCurrentCar(carDetails);updateMode()" > Güncelle </button>
 </div>  
 
 
 
-<div *ngIf="carUpdateMode">
+<div *ngIf="carUpdateMode">       
+
     <div>
         <img  *ngFor="let carImage of carImages" [src]="getImageSource(carImage)" width="300px" class="imageCards" >
     </div>
@@ -88,8 +89,8 @@
                     <div class="mb-3">
                         <label for="brandId">Marka Adı</label>
                         <div class="form-group">
-                            <select #brandList class="form-select" aria-label="brandId"
-                            (change)="setBrandId(brandList.value)" formControlName="brandId">
+                            <select #brandList class="form-select" ar0ia-label="brandId"
+                            (change)="setBrandId(brandList.value)" formControlName="brandId">  
                                 <option *ngFor="let brand of brands" [value]="brand.brandId" selected> {{brand.brandName}} </option>
                             </select>
                         </div>
@@ -99,7 +100,7 @@
                         <div class="form-group">
                             <select #colorList class="form-select" aria-label="colorId"
                             (change)="setColorId(colorList.value)" formControlName="colorId">
-                                <option *ngFor="let color of colors" [value]="color.colorId" > {{color.colorName}} </option>
+                                <option *ngFor="let color of colors" [value]="color.colorId" selected> {{color.colorName}} </option>
                             </select>
                         </div>
                     </div>  
