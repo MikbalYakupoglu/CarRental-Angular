@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 
+<app-navi></app-navi>
+
 <div class="row">
 
     <div class="col-3">
@@ -76,7 +78,7 @@
                 </tbody>
             </table>
         </div>
-    <button class="btn btn-info" style="margin: 20px;" (click)="setCurrentCar(carDetails);updateMode()" > Güncelle </button>
+    <button class="btn btn-info" style="margin: 20px;" (click)="updateMode()" > Güncelle </button>
 </div>  
 
 
@@ -86,15 +88,16 @@
     <div *ngFor="let carImage of carImages" style="display: inline-block; width: 30%;">
             <img [src]="getImageSource(carImage)" width="300px" class="imageCards">
             <a class="btn btn-danger" style="position:static;" >
-                <i class="fa fa-trash-o fa-lg"></i> Resmi Sil
+                <i class="fa fa-trash-o fa-lg"></i> Fotoğrafı Sil
               </a> 
     </div>
 
-
     <div style="display: inline-block; width: 30%;">
-        <a class="btn btn-success">
-            <i class="fa fa-solid fa-plus"></i> Resim Ekle
-        </a>
+            <input type="file" id="file"
+            (change)="carImageToUpload($any($event).target.files)" style="margin-bottom: 40px;">
+            <button class="btn btn-success" (click)="addImage(imageToUpload)">
+                <i class="fa fa-solid fa-plus" ></i> Fotoğraf Ekle
+            </button>
     </div>
 
     

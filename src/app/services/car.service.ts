@@ -67,9 +67,9 @@ export class CarService {
     return this._httpClient.get<ListResponseModel<CarImage>>(newPath);
   }
 
-  addCarImage(file:File, carImage:CarImage):Observable<ResponseModel>{
+  addCarImage(carImage:FormData, carImageModel:FormData):Observable<ResponseModel>{
     let newPath = this.apiUrl + "carimages/";
-    return this._httpClient.post<ResponseModel>(newPath,[file,carImage]);
+    return this._httpClient.post<ResponseModel>(newPath,[carImage,carImageModel]);
   }
     
 

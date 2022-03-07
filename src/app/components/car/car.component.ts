@@ -38,6 +38,7 @@ export class CarComponent implements OnInit {
 
   carDetails:Car;
   currentCar:Car;
+  currentCarImage:CarImage;
   dataListed = false;
   filterText = "";
 
@@ -51,6 +52,9 @@ export class CarComponent implements OnInit {
 
   carUpdateForm:FormGroup;
   carUpdateMode:boolean = false;
+
+  carImageForm:FormGroup;
+  imageToUpload:File;
 
   showCars(){
     this._carService.getCars().subscribe(response => {
@@ -86,7 +90,30 @@ export class CarComponent implements OnInit {
       this.carDetails = response.data;
       this.dataListed = true;
 
+      this.setCurrentCar(this.carDetails);
+
+
+      if (this.router.url.indexOf("update") > -1) {
+        this.getCurrentCarsBrand();
+        this.getCurrentCarsColor();
+        this.createCarUpdateForm(); 
+        this.carUpdateMode = true;
+        this.createCarImageForm();
+
+
+      } else {
+        this.carUpdateMode = false;
+      }
+
     });
+  }
+
+  setCurrentCarById(carId:number){
+    this.cars.forEach((car:Car) => {
+      if (car.carId === carId) {
+        this.currentCar = car;
+      }
+    });    
   }
 
   setCurrentCar(car:Car){
@@ -101,6 +128,14 @@ export class CarComponent implements OnInit {
     this._carService.getImagesByCar(carId).subscribe(response=>{
       this.carImages = response.data;
     });
+  }
+  
+  setCurrentCarImage(carImage:CarImage){
+    this.currentCarImage = carImage;
+  }
+
+  getCurrentCarImage():CarImage{
+    return this.currentCarImage;
   }
 
   getCarImageForExhibit(){
@@ -324,6 +359,49 @@ export class CarComponent implements OnInit {
   }
 
 
+  createCarImageForm(){
+    this.carImageForm = this.formBuilder.group({
+      carId:[this.currentCar.carId],
+      carImageId:[],
+      imagePath:[],
+      date:[]
+    })
+  }
+
+  carImageToUpload(files:FileList){    
+    this.imageToUpload = files.item(0);
+
+  } 
+
+  // file okuyor ama carimagei object olarak alıyor(içeriğini almıyor)
+  addImage(file:File){
+
+    let carImageToUploadFormData:FormData = new FormData();
+    let carImageModelFormData:FormData = new FormData();
+
+    let carImageModel = Object.assign({}, this.carImageForm.value);
+
+    carImageToUploadFormData.append("file",this.imageToUpload);
+    carImageModelFormData.append("carImage",JSON.stringify(this.carImageForm.value));
+
+
+    this._carService.addCarImage(carImageToUploadFormData,carImageModelFormData).subscribe(response=>{
+      console.log(response);
+      console.log("response");
+
+      this._toastrService.success(response.message,"Başarılı",{progressBar:true,timeOut:3000})
+
+    },
+    errorResponse=>{
+      console.log("errorResponse");
+      console.log(errorResponse);
+
+      if (file === undefined) {
+        this._toastrService.error("Resim Boş Bırakılamaz","Hata",{progressBar:true,timeOut:3000})
+      }
+    });
+  }
+
 
   ngOnInit(): void {
     this.dateOfNow = new Date();
@@ -332,21 +410,12 @@ export class CarComponent implements OnInit {
     this.getColors();
 
 
-
     this._activatedRoute.params.subscribe(params=>{
       if(params["carId"]){
         this.showCarDetails(params["carId"]);
         this.getCarImages(params["carId"]);
         
-          if (this.router.url.indexOf("update") > -1) {
-            this.getCurrentCarsBrand();
-            this.getCurrentCarsColor();
-            this.createCarUpdateForm(); 
-            this.carUpdateMode = true;
-  
-          } else {
-            this.carUpdateMode = false;
-          }
+
       }
       else if (params["brandId"] && params["colorId"]){
         this.showCarsByFilter(params["brandId"],params["colorId"]);

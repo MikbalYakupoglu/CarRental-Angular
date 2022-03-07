@@ -5,6 +5,7 @@ import { CarAddComponent } from './components/car-add/car-add.component';
 import { CarComponent } from './components/car/car.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ColorAddComponent } from './components/color-add/color-add.component';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 import { PaymentComponent } from './components/payment/payment.component';
 
 const routes: Routes = [
@@ -19,8 +20,11 @@ const routes: Routes = [
   {path:"cart",component:CartComponent},
   {path:"cars/add",component:CarAddComponent},
   {path:"brands/add", component:BrandAddComponent},
-  {path:"colors/add", component:ColorAddComponent}
+  {path:"colors/add", component:ColorAddComponent},
 
+
+
+  {path:"**", component:PagenotfoundComponent},
 
 ];
 

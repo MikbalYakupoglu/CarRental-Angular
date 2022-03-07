@@ -1,6 +1,6 @@
 export interface CarImage{
-    carImageId:number;
+    carImageId?:number;
     carId:number;
-    imagePath:string;
-    date:Date;
+    imagePath?:string;
+    date?:Date;
 }
