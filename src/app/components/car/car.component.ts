@@ -232,12 +232,14 @@ export class CarComponent implements OnInit {
 
   updateMode(){
     if (this.carUpdateMode === true) {
-      this.carUpdateMode = false;
+      // this.carUpdateMode = false;
+      this.router.navigate(["carDetails/"+this.currentCar.carId]);
     } else {
-      this.getCurrentCarsBrand();
-      this.getCurrentCarsColor();
-      this.createCarUpdateForm();
-      this.carUpdateMode = true;
+      // this.getCurrentCarsBrand();
+      // this.getCurrentCarsColor();
+      // this.createCarUpdateForm();
+      // this.carUpdateMode = true;
+      this.router.navigate(["carDetails/update/"+this.currentCar.carId]);
     }
   }
 
@@ -282,7 +284,6 @@ export class CarComponent implements OnInit {
           this.router.navigate(['cars']);
         },
         (errorResponse) => {
-          console.log(errorResponse);
           if(errorResponse.error.ValidationErrors){ //Validation Error
             errorResponse.error.ValidationErrors.forEach((error:any) => {
             this._toastrService.error(error.ErrorMessage,"Hata",{progressBar:true,timeOut:4000});          
@@ -336,8 +337,16 @@ export class CarComponent implements OnInit {
       if(params["carId"]){
         this.showCarDetails(params["carId"]);
         this.getCarImages(params["carId"]);
-
-
+        
+          if (this.router.url.indexOf("update") > -1) {
+            this.getCurrentCarsBrand();
+            this.getCurrentCarsColor();
+            this.createCarUpdateForm(); 
+            this.carUpdateMode = true;
+  
+          } else {
+            this.carUpdateMode = false;
+          }
       }
       else if (params["brandId"] && params["colorId"]){
         this.showCarsByFilter(params["brandId"],params["colorId"]);
