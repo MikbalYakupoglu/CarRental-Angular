@@ -377,15 +377,17 @@ export class CarComponent implements OnInit {
   addImage(file:File){
 
     let carImageToUploadFormData:FormData = new FormData();
-    let carImageModelFormData:FormData = new FormData();
-
-    let carImageModel = Object.assign({}, this.carImageForm.value);
 
     carImageToUploadFormData.append("file",this.imageToUpload);
-    carImageModelFormData.append("carImage",JSON.stringify(this.carImageForm.value));
+    carImageToUploadFormData.append("carId",this.carImageForm.value.carId);
+
+    console.log(carImageToUploadFormData.getAll("file"));
+    console.log(carImageToUploadFormData.getAll("carId"));
+    console.log(carImageToUploadFormData);
 
 
-    this._carService.addCarImage(carImageToUploadFormData,carImageModelFormData).subscribe(response=>{
+
+    this._carService.addCarImage(carImageToUploadFormData).subscribe(response=>{
       console.log(response);
       console.log("response");
 

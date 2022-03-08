@@ -93,7 +93,7 @@
     </div>
 
     <div style="display: inline-block; width: 30%;">
-            <input type="file" id="file"
+            <input type="file" id="file" accept=".jpg,.jpeg,.png"
             (change)="carImageToUpload($any($event).target.files)" style="margin-bottom: 40px;">
             <button class="btn btn-success" (click)="addImage(imageToUpload)">
                 <i class="fa fa-solid fa-plus" ></i> Fotoğraf Ekle
