@@ -19,8 +19,8 @@ const routes: Routes = [
   {path:"payment",component:PaymentComponent},
   {path:"cart",component:CartComponent},
   {path:"cars/add",component:CarAddComponent},
-  {path:"brands/add", component:BrandAddComponent},
-  {path:"colors/add", component:ColorAddComponent},
+  {path:"brands", component:BrandAddComponent},
+  {path:"colors", component:ColorAddComponent},
 
 
 

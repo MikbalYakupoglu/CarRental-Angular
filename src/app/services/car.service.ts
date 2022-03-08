@@ -71,6 +71,11 @@ export class CarService {
     let newPath = this.apiUrl + "carimages/";
     return this._httpClient.post<ResponseModel>(newPath,carImage);
   }
+
+  deleteCarImage(carImageId:number):Observable<ResponseModel>{
+    let newPath = this.apiUrl + "carimages/";
+    return this._httpClient.delete<ResponseModel>(newPath+carImageId);
+  }
     
 
 }

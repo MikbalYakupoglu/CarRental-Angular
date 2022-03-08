@@ -26,7 +26,12 @@
 </div>
 
 <div class="container" style="margin-top: 20px;">
-    <ul class="list-group-flush" style="max-width: 200px;" >
-        <li *ngFor="let brand of brands" class="list-group-item"> {{brand.brandName}} </li>
+    <ul class="list-group-flush"  style="max-width: 350px;" >
+        <li *ngFor="let brand of brands" class="list-group-item" style="display: inline-block;"> 
+            {{brand.brandName}} 
+            <button style="margin-left: 20px;" (click)="deleteBrand(brand.brandId)">
+                <img  src="https://img.icons8.com/plasticine/30/000000/filled-trash.png"/> Markayı Sil
+            </button>   
+        </li>
     </ul>
 </div>

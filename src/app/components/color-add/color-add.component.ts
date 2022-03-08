@@ -41,6 +41,7 @@ export class ColorAddComponent implements OnInit {
           progressBar:true,
           timeOut:2000
         })
+        window.location.reload();
       },
       errorResponse=>{
         if(errorResponse.error.ValidationErrors){
@@ -72,6 +73,20 @@ export class ColorAddComponent implements OnInit {
         timeOut:2000
       })
     }
+  }
+
+  deleteColor(colorId:number){
+    this._colorService.deleteColor(colorId).subscribe((response)=>{
+      this.toastrService.success(response.message,"Başarılı",{progressBar:true,timeOut:3000});
+      (window.location.reload(),2000);
+    },
+    errorResponse => {
+      console.log(errorResponse);
+      if (errorResponse.error.message) {
+      this.toastrService.error(errorResponse.error.message,"Başarılı",{progressBar:true,timeOut:3000});
+      }
+    });
+
   }
 
 

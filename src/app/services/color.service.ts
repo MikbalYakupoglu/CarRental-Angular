@@ -24,5 +24,10 @@ export class ColorService {
     return this._httpClient.post<ResponseModel>(newPath,color);
   }
 
+  deleteColor(colorId:number){
+    let newPath = this.apiUrl + "colors/";
+    return this._httpClient.delete<ResponseModel>(newPath+colorId)
+  }
+
 
 }

@@ -88,6 +88,7 @@ export class CarAddComponent implements OnInit {
         this.toastrService.success(response.message,"Başarılı",{
           progressBar:true, timeOut:2000
         });
+        window.location.reload();
      },
      errorResponse=>{
 

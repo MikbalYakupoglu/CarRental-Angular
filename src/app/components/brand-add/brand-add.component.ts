@@ -42,6 +42,7 @@ export class BrandAddComponent implements OnInit {
           progressBar:true,
           timeOut:2000
         })
+        window.location.reload();
       },
       errorResponse=>{
         if(errorResponse.error.ValidationErrors){
@@ -74,5 +75,21 @@ export class BrandAddComponent implements OnInit {
       })
     }
   }
+
+  deleteBrand(colorId:number){
+    this._brandService.deleteBrand(colorId).subscribe((response)=>{
+      this.toastrService.success(response.message,"Başarılı",{progressBar:true,timeOut:3000});
+      (window.location.reload(),2000);
+    },
+    errorResponse => {
+      console.log(errorResponse);
+      if (errorResponse.error.message) {
+      this.toastrService.error(errorResponse.error.message,"Başarılı",{progressBar:true,timeOut:3000});
+      }
+    });
+  }
+
+
+  
 
 }

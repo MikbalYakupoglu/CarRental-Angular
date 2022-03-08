@@ -9,6 +9,9 @@
         <app-car-filter></app-car-filter>
     </div>
 
+        <div *ngIf="!dataListed" class="loading">
+            <div class="loader"></div>
+        </div>
 
 
     <div *ngIf="!carDetails" class="col-9">
@@ -17,40 +20,33 @@
             <input type="email" [(ngModel)]="filterText" class="form-control" id="filterText" 
             placeholder="Aramak İstediğiniz Ürünü Giriniz">
         </div>
-
-        <div *ngIf="dataListed == false"  class="spinner-border text-primary" role="status" 
-        style="margin: auto; display: block;">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-
-
-        <div>
-            <div class="card mb-3" *ngFor="let car of cars | filter:filterText" style="margin:20px">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <div class="card-body">
-                            <h5 class="card-title" (click)=" setCurrentCar(car);  "
-                            routerLink="/carDetails/{{car.carId}}"> {{car.description}} </h5>
-                            <p class="card-text" style="width: 300px;"> 
-                                Brand: {{car.brandName}} <br>
-                                Color: {{car.colorName}}  <br> 
-                                ModelYear: {{car.modelYear}} <br>
-                                Hourly Price: {{car.dailyPrice | hourlyPrice | currency }} 
-                            </p>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                            data-bs-target="#exampleModal" (click)="setCurrentCar(car)" > Kirala </button>
-                        </div>
+        <div class="card mb-3" *ngFor="let car of cars | filter:filterText" style="margin:20px">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <div class="card-body">
+                        <h5 class="card-title" (click)=" setCurrentCar(car);  "
+                        routerLink="/carDetails/{{car.carId}}"> {{car.description}} </h5>
+                        <p class="card-text" style="width: 300px;"> 
+                            Brand: {{car.brandName}} <br>
+                            Color: {{car.colorName}}  <br> 
+                            ModelYear: {{car.modelYear}} <br>
+                            Hourly Price: {{car.dailyPrice | hourlyPrice | currency }} 
+                        </p>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                        data-bs-target="#exampleModal" (click)="setCurrentCar(car)" > Kirala </button>
                     </div>
-                    <div class="col-md-8">
-                        <img [src]="getCarIdForExhibitImage(car.carId)" class="imageCards" width="300px">
-                    </div>
+                </div>
+                <div class="col-md-8">
+                    <img [src]="getCarIdForExhibitImage(car.carId)" class="imageCards" width="300px">
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <div *ngIf="carDetails && !carUpdateMode">
+
     <div>
         <img  *ngFor="let carImage of carImages" [src]="getImageSource(carImage)" width="300px" class="imageCards" >
     </div>
@@ -87,9 +83,9 @@
 
     <div *ngFor="let carImage of carImages" style="display: inline-block; width: 30%;">
             <img [src]="getImageSource(carImage)" width="300px" class="imageCards">
-            <a class="btn btn-danger" style="position:static;" >
+            <button class="btn btn-danger" (click)="deleteImage(carImage.carImageId)" style="position:static;" >
                 <i class="fa fa-trash-o fa-lg"></i> Fotoğrafı Sil
-              </a> 
+            </button> 
     </div>
 
     <div style="display: inline-block; width: 30%;">

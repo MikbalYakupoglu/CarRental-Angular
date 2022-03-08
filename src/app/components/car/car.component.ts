@@ -14,6 +14,7 @@ import { BrandService } from 'src/app/services/brand.service';
 import { ColorService } from 'src/app/services/color.service';
 import { Brand } from 'src/app/models/brand';
 import { Color } from 'src/app/models/color';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-car',
@@ -89,21 +90,6 @@ export class CarComponent implements OnInit {
     this._carService.getCarById(carId).subscribe(response=>{
       this.carDetails = response.data;
       this.dataListed = true;
-
-      this.setCurrentCar(this.carDetails);
-
-
-      if (this.router.url.indexOf("update") > -1) {
-        this.getCurrentCarsBrand();
-        this.getCurrentCarsColor();
-        this.createCarUpdateForm(); 
-        this.carUpdateMode = true;
-        this.createCarImageForm();
-
-
-      } else {
-        this.carUpdateMode = false;
-      }
 
     });
   }
@@ -296,7 +282,7 @@ export class CarComponent implements OnInit {
         return subset === cluster;
 }
 
-  // null check eklenecek (null ise aynı değer atanacak)
+
   updateChanges(){
     
 
@@ -316,7 +302,7 @@ export class CarComponent implements OnInit {
       this._carService.updateCar(carModelToUpdate).subscribe((response) =>{    
     
           this._toastrService.success("Ürün Güncellendi","Başarılı",{timeOut:3000,progressBar:true});
-          this.router.navigate(['cars']);
+          window.location.reload();
         },
         (errorResponse) => {
           if(errorResponse.error.ValidationErrors){ //Validation Error
@@ -373,35 +359,53 @@ export class CarComponent implements OnInit {
 
   } 
 
-  // file okuyor ama carimagei object olarak alıyor(içeriğini almıyor)
   addImage(file:File){
 
     let carImageToUploadFormData:FormData = new FormData();
 
-    carImageToUploadFormData.append("file",this.imageToUpload);
+    carImageToUploadFormData.append("file",this.imageToUpload); 
     carImageToUploadFormData.append("carId",this.carImageForm.value.carId);
 
-    console.log(carImageToUploadFormData.getAll("file"));
-    console.log(carImageToUploadFormData.getAll("carId"));
-    console.log(carImageToUploadFormData);
+    this._carService.addCarImage(carImageToUploadFormData).subscribe((response) => {      
 
-
-
-    this._carService.addCarImage(carImageToUploadFormData).subscribe(response=>{
-      console.log(response);
-      console.log("response");
-
-      this._toastrService.success(response.message,"Başarılı",{progressBar:true,timeOut:3000})
+        if (this.imageToUpload.type.indexOf("image") > -1) {
+          this._toastrService.success(response.message,"Başarılı",{progressBar:true,timeOut:3000})
+          window.location.reload();
+        }
+        else{
+          this._toastrService.error("Geçersiz Dosya Tipi","Hata",{progressBar:true,timeOut:3000})
+        }
 
     },
-    errorResponse=>{
-      console.log("errorResponse");
-      console.log(errorResponse);
+    (errorResponse) => {
 
       if (file === undefined) {
         this._toastrService.error("Resim Boş Bırakılamaz","Hata",{progressBar:true,timeOut:3000})
       }
+      else if (errorResponse.error.status === HttpStatusCode.UnsupportedMediaType){
+        this._toastrService.error("Geçersiz Dosya Tipi","Hata",{progressBar:true,timeOut:3000})
+      }
     });
+  }
+
+  deleteImage(carImageId:number){
+    this._carService.deleteCarImage(carImageId).subscribe((response)=>{
+      console.log(response);
+      this._toastrService.success(response.message,"Başarılı",{progressBar:true,timeOut:3000})
+      window.location.reload();
+    },
+    (errorResponse)=>{
+      if(carImageId === 0){
+        this._toastrService.error("Varsayılan Resim Silinemez","Hata",{progressBar:true,timeOut:3000})       
+
+      }
+      else if (errorResponse.error.message) {
+       this._toastrService.error(errorResponse.error.message,"Hata",{progressBar:true,timeOut:3000})        
+      }
+
+      console.log(errorResponse);
+    }
+    );
   }
 
 
@@ -413,10 +417,27 @@ export class CarComponent implements OnInit {
 
 
     this._activatedRoute.params.subscribe(params=>{
+
       if(params["carId"]){
         this.showCarDetails(params["carId"]);
         this.getCarImages(params["carId"]);
         
+        
+        setTimeout(() => {
+          this.setCurrentCar(this.carDetails) 
+
+        if (this.router.url.indexOf("update") > -1) {
+            this.getCurrentCarsBrand(),
+            this.getCurrentCarsColor(),
+            this.createCarUpdateForm(),
+            this.carUpdateMode = true,
+            this.createCarImageForm()
+        }
+        else{
+          this.carUpdateMode = false;
+        }
+      },300);
+
 
       }
       else if (params["brandId"] && params["colorId"]){
