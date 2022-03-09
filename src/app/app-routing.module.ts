@@ -5,14 +5,17 @@ import { CarAddComponent } from './components/car-add/car-add.component';
 import { CarComponent } from './components/car/car.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ColorAddComponent } from './components/color-add/color-add.component';
+import { LoginComponent } from './components/login/login.component';
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { AlreadyLoginedGuard } from './guards/already-logined.guard';
+import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
   {path:"",component:CarComponent},
   {path:"cars",component:CarComponent},
   {path:"carDetails/:carId",component:CarComponent},
-  {path:"carDetails/update/:carId",component:CarComponent},
+  {path:"carDetails/update/:carId",component:CarComponent, canActivate:[LoginGuard]},
   {path:"cars/brand/:brandId",component:CarComponent},
   {path:"cars/color/:colorId",component:CarComponent},
   {path:"cars/brand/:brandId/color/:colorId",component:CarComponent},
@@ -21,6 +24,8 @@ const routes: Routes = [
   {path:"cars/add",component:CarAddComponent},
   {path:"brands", component:BrandAddComponent},
   {path:"colors", component:ColorAddComponent},
+  {path:"login", component:LoginComponent, canActivate:[AlreadyLoginedGuard]},
+  
 
 
 

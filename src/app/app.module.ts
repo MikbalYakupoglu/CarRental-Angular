@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -27,6 +27,8 @@ import { ColorAddComponent } from './components/color-add/color-add.component';
 import { CarAddComponent } from './components/car-add/car-add.component';
 import { CarUpdateComponent } from './components/car-update/car-update.component';
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.co
     CarAddComponent,
     CarUpdateComponent,
     PagenotfoundComponent,
+    LoginComponent,
   ],
   
   imports: [
@@ -55,7 +58,10 @@ import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.co
     AppRoutingModule,
     HttpClientModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-right',
+      timeOut:3000,
+      progressBar:true,
+      maxOpened:5
     }),
     BrowserAnimationsModule,
     FormsModule,
@@ -67,6 +73,7 @@ import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.co
   ],
 
   providers: [
+    {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}
 
   ],
 

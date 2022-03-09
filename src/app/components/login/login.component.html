@@ -1,0 +1,30 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="margin: 0 auto;" routerLink="">Ana Sayfa</a>
+    </div>
+</nav>
+
+
+<div class="text-center" style="height: 100%;margin-top:40px ">
+    <main class="form-signin">
+        <form [formGroup]="loginForm">
+        <h1 class="h3 mb-3 fw-normal">Lütfen Giriş Yapın</h1>
+    
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" formControlName="email">
+            <label for="floatingInput">E-Mail</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" formControlName="password">
+            <label for="floatingPassword">Şifre</label>
+        </div>
+    
+        <div class="checkbox mb-3">
+            <label>
+            <input type="checkbox" value="remember-me"> Beni hatırla
+            </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" (click)="login()">Giriş</button>
+        </form>
+    </main>
+</div>

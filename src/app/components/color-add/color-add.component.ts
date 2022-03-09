@@ -37,54 +37,45 @@ export class ColorAddComponent implements OnInit {
     if (this.colorAddForm.valid) {
       let colorModel = Object.assign({},this.colorAddForm.value);
       this._colorService.addColor(colorModel).subscribe(response=>{
-        this.toastrService.success(response.message,"Başarılı",{
-          progressBar:true,
-          timeOut:2000
-        })
-        window.location.reload();
+        this.toastrService.success(response.message,"Başarılı")
+        setTimeout(() => {
+          window.location.reload();        
+        }, 1000);
       },
       errorResponse=>{
         if(errorResponse.error.ValidationErrors){
           errorResponse.error.ValidationErrors.forEach((error:any) => {
-            this.toastrService.error(error.ErrorMessage,"Hata",{
-              progressBar:true,
-              timeOut:3000
-            })
-          });
+            this.toastrService.error(error.ErrorMessage,"Hata");
+          })
         }
         else if(errorResponse.error.message){ // from responseModel
-          this.toastrService.error(errorResponse.error.message,"Hata",{
-            progressBar:true,
-            timeOut:3000
-          })
+          this.toastrService.error(errorResponse.error.message,"Hata");
         }
         else{ // from Exception
-          this.toastrService.error(errorResponse.error.Message,"Hata",{
-            progressBar:true,
-            timeOut:3000
-          })
+          this.toastrService.error(errorResponse.error.Message,"Hata");
         }
       })
     }
 
     else{
-      this.toastrService.error("Form Eksik","Hata",{
-        progressBar:true,
-        timeOut:2000
-      })
+      this.toastrService.error("Form Eksik","Hata");
     }
   }
 
   deleteColor(colorId:number){
     this._colorService.deleteColor(colorId).subscribe((response)=>{
-      this.toastrService.success(response.message,"Başarılı",{progressBar:true,timeOut:3000});
-      (window.location.reload(),2000);
+      this.toastrService.success(response.message,"Başarılı");
+      setTimeout(() => {
+        window.location.reload();        
+      }, 1000);
     },
     errorResponse => {
-      console.log(errorResponse);
       if (errorResponse.error.message) {
-      this.toastrService.error(errorResponse.error.message,"Başarılı",{progressBar:true,timeOut:3000});
+      this.toastrService.error(errorResponse.error.message);
       }
+      else if (errorResponse.error.Message) {
+        this.toastrService.error(errorResponse.error.Message);
+        }
     });
 
   }
