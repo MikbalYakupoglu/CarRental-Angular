@@ -57,6 +57,8 @@ export class CarComponent implements OnInit {
   carImageForm:FormGroup;
   imageToUpload:File;
 
+  isLogined:boolean = false;
+
   showCars(){
     this._carService.getCars().subscribe(response => {
       this.cars = response.data;
@@ -412,6 +414,12 @@ export class CarComponent implements OnInit {
   ngOnInit(): void {
     this.dateOfNow = new Date();
 
+    if (localStorage.getItem("token")) {
+      this.isLogined = true;
+    } else {
+      this.isLogined = false; 
+    }
+    
     this.getBrands();
     this.getColors();
 

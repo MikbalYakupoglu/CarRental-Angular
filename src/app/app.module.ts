@@ -25,10 +25,10 @@ import { CartComponent } from './components/cart/cart.component';
 import { BrandAddComponent } from './components/brand-add/brand-add.component';
 import { ColorAddComponent } from './components/color-add/color-add.component';
 import { CarAddComponent } from './components/car-add/car-add.component';
-import { CarUpdateComponent } from './components/car-update/car-update.component';
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -48,9 +48,9 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     BrandAddComponent,
     ColorAddComponent,
     CarAddComponent,
-    CarUpdateComponent,
     PagenotfoundComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   
   imports: [

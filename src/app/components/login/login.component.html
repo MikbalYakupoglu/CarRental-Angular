@@ -11,7 +11,7 @@
         <h1 class="h3 mb-3 fw-normal">Lütfen Giriş Yapın</h1>
     
         <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" formControlName="email">
+            <input type="email" class="form-control" id="floatingEmail" formControlName="email">
             <label for="floatingInput">E-Mail</label>
         </div>
         <div class="form-floating">
@@ -21,10 +21,11 @@
     
         <div class="checkbox mb-3">
             <label>
-            <input type="checkbox" value="remember-me"> Beni hatırla
+            <input type="checkbox" value="remember-me" formControlName="isActive"> Beni hatırla
             </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" (click)="login()">Giriş</button>
         </form>
+        <p style="margin-top: 20px;">Hesabınız Yok Mu ? <span routerLink="/register" style="color: blue;">Hesap Oluştur</span></p>
     </main>
 </div>

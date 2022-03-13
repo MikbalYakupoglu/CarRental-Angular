@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" id="menu">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item">
@@ -11,9 +11,22 @@
 
       <app-cart-summary></app-cart-summary>
 
+      <li *ngIf="isLogined" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" style="color:red;"
+        data-bs-toggle="dropdown" aria-expanded="false"> Admin Panel </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" routerLink="/cars/add">Araba Ekle</a></li>
+          <li><a class="dropdown-item" routerLink="/brands">Marka Ekle</a></li>
+          <li><a class="dropdown-item" routerLink="/colors">Renk Ekle</a></li>
+        </ul>
+      </li>
+
       <!-- Login sağa alınacak -->
-      <li class="nav-item" style="float: right;">
+      <li class="nav-item" style="float: right;" *ngIf="!isLogined">
         <a class="nav-link active" aria-current="page" routerLink="/login">Login</a>
+      </li>
+      <li class="nav-item" style="float: right;" *ngIf="isLogined">
+        <a class="nav-link active" aria-current="page" (click)="logout()" routerLink="">Logout</a>
       </li>
     </ul>
   </div>

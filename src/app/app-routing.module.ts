@@ -8,6 +8,7 @@ import { ColorAddComponent } from './components/color-add/color-add.component';
 import { LoginComponent } from './components/login/login.component';
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { RegisterComponent } from './components/register/register.component';
 import { AlreadyLoginedGuard } from './guards/already-logined.guard';
 import { LoginGuard } from './guards/login.guard';
 
@@ -21,10 +22,12 @@ const routes: Routes = [
   {path:"cars/brand/:brandId/color/:colorId",component:CarComponent},
   {path:"payment",component:PaymentComponent},
   {path:"cart",component:CartComponent},
-  {path:"cars/add",component:CarAddComponent},
-  {path:"brands", component:BrandAddComponent},
-  {path:"colors", component:ColorAddComponent},
+  {path:"cars/add",component:CarAddComponent, canActivate:[LoginGuard]},
+  {path:"brands", component:BrandAddComponent, canActivate:[LoginGuard]},
+  {path:"colors", component:ColorAddComponent, canActivate:[LoginGuard]},
   {path:"login", component:LoginComponent, canActivate:[AlreadyLoginedGuard]},
+  {path:"register", component:RegisterComponent, canActivate:[AlreadyLoginedGuard]},
+
   
 
 

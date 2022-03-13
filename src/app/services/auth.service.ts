@@ -34,7 +34,7 @@ export class AuthService {
     let currentTime:Date = new Date();
     let tokenExpiration:Date = new Date(localStorage.getItem("tokenExpiration"));
 
-    if (currentTime > tokenExpiration) {
+    if (currentTime >= tokenExpiration) {
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiration");
     }

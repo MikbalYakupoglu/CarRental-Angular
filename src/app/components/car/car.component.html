@@ -74,7 +74,7 @@
                 </tbody>
             </table>
         </div>
-    <button class="btn btn-info" style="margin: 20px;" (click)="updateMode()" > Güncelle </button>
+    <button *ngIf="isLogined" class="btn btn-info" style="margin: 20px;" (click)="updateMode()" > Güncelle </button>
 </div>  
 
 

@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  
   loginForm:FormGroup;
 
   constructor(private formBuilder:FormBuilder, private toastrService:ToastrService,
@@ -20,11 +21,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.createLoginForm();
   }
+  
 
   createLoginForm() {
     this.loginForm = this.formBuilder.group({
       email:[,Validators.required],
-      password:[,Validators.required]
+      password:[,Validators.required],
+      isActive:[false]
     });
   }
 
@@ -34,8 +37,17 @@ export class LoginComponent implements OnInit {
     
     if (this.loginForm.valid) {
       this.authService.login(loginModel).subscribe((response)=>{
+
           localStorage.setItem("token",response.data.token);
-          localStorage.setItem("tokenExpiration",response.data.expiration);
+          
+          if (loginModel.isActive === true) {
+            localStorage.setItem("tokenExpiration",(moment(response.data.expiration).add(30, 'd').toDate().toString()));
+  
+          }
+          else{
+            localStorage.setItem("tokenExpiration",response.data.expiration);
+          }
+
           this.router.navigate([""]);        
       },
       (errorResponse)=>{
@@ -45,8 +57,6 @@ export class LoginComponent implements OnInit {
     else{
       this.toastrService.error("Bilgiler Boş Bırakılamaz","Hata");
     }
-
-
   }
 
 }

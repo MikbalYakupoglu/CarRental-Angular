@@ -1,0 +1,33 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="margin: 0 auto;" routerLink="">Ana Sayfa</a>
+    </div>
+</nav>
+
+
+<div class="text-center" style="height: 100%;margin-top:40px ">
+    <main class="form-signin">
+        <form [formGroup]="registerForm">
+        <h1 class="h3 mb-3 fw-normal">Kullanıcı Oluştur</h1>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingfirstName" formControlName="firstName">
+            <label for="floatingfirstName">İsim</label>
+        </div>        
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatinglastName" formControlName="lastName">
+            <label for="floatinglastName">Soyisim</label>
+        </div>
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingEmail" formControlName="email">
+            <label for="floatingEmail">E-Mail</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" formControlName="password">
+            <label for="floatingPassword">Şifre</label>
+        </div>
+    
+        <button class="w-100 btn btn-lg btn-primary" (click)="register()">Kullanıcı Oluştur</button>
+        </form>
+        <p style="margin-top: 20px;">Hesabın zaten var mı ? <span routerLink="/login" style="color: blue;">Giriş Yap</span></p>
+    </main>
+</div>
