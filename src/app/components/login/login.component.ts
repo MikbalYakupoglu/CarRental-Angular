@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authService.login(loginModel).subscribe((response)=>{
           localStorage.setItem("token",response.data.token);
+          localStorage.setItem("tokenExpiration",response.data.expiration);
           this.router.navigate([""]);        
       },
       (errorResponse)=>{

@@ -9,7 +9,15 @@ export class NaviComponent implements OnInit {
 
   constructor() { }
 
+  isLogined:boolean = false;
+
   ngOnInit(): void {
+    if (localStorage.getItem("token")) {
+      this.isLogined = true;
+    }
+    else{
+      this.isLogined = false;
+    }
   }
 
 }
