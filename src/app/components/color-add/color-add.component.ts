@@ -18,7 +18,7 @@ export class ColorAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.createColorAddForm();
-    this.getBrands();
+    this.getColors();
   }
 
   createColorAddForm(){
@@ -27,7 +27,7 @@ export class ColorAddComponent implements OnInit {
     });
   }
 
-  getBrands(){
+  getColors(){
     this._colorService.getColors().subscribe(response=>{
       this.colors = response.data;
     });
